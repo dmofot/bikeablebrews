@@ -92,9 +92,6 @@ input[type="radio"], input[type="checkbox"] {
 .navbar-header a.navbar-icon {
   margin-left: 25px;
 }
-.navbar-form {
-  margin-top: 0px;
-}
 .typeahead {
   background-color: #FFFFFF;
 }
@@ -154,6 +151,9 @@ input[type="radio"], input[type="checkbox"] {
   }
   #sidebar {
     display: none;
+  }
+  .navbar-form {
+  margin-top: 0px;
   }
 }
 /* Print Handling */
