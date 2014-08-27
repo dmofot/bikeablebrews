@@ -1,4 +1,4 @@
-var map, featureList, poiSearch = []; //wodSearch = []
+var map, featureList, poiSearch = [];
 
 $(document).on("click", ".feature-name", function(e) {
   sidebarClick(parseInt($(this).attr('id')));
@@ -18,16 +18,9 @@ function sidebarClick(id) {
   }
 }
 
-/* Basemap Layers */
-// Example basemap layers from Mapbox
+/* Basemap Layers
+   Example basemaps from Mapbox */
 var mapboxTer = L.tileLayer("https://{s}.tiles.mapbox.com/v3/examples.map-i875mjb7/{z}/{x}/{y}.png", {
-  detectRetina: 'true',
-  maxZoom: 21,
-  subdomains: ["a", "b", "c", "d"],
-  attribution: 'Tiles courtesy of <a href="http://www.mapbox.com/" target="_blank">Mapbox</a> '
-});
-
-var mapboxStreet = L.tileLayer("https://{s}.tiles.mapbox.com/v3/examples.a3cad6da/{z}/{x}/{y}.png", {
   detectRetina: 'true',
   maxZoom: 21,
   subdomains: ["a", "b", "c", "d"],
@@ -40,27 +33,6 @@ var mapboxSat = L.tileLayer("https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5
   subdomains: ["a", "b", "c", "d"],
   attribution: 'Tiles courtesy of <a href="http://www.mapbox.com/" target="_blank">Mapbox</a> '
 });
-
-/* Free MapQuest base layers
-var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  subdomains: ["otile1", "otile2", "otile3", "otile4"],
-  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-});
-var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-  maxZoom: 18,
-  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-});
-var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-  maxZoom: 18,
-  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
-}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-})]);
-*/
 
 /* Overlay Layers */
 var highlight = L.geoJson(null);
@@ -75,10 +47,10 @@ var wodTrail = L.geoJson(null, {
   },
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>County</th><td>" + feature.properties.COUNTY + "</td></tr>" + "<tr><th>From</th><td>" + feature.properties.FROM_ + "</td></tr>" + "<tr><th>To</th><td>" + feature.properties.TO + "</td></tr>" + "<table>";
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name/th><td>" + feature.properties.name + "<table>";
       layer.on({
         click: function (e) {
-          $("#feature-title").html(feature.properties.NAME);
+          $("#feature-title").html(feature.properties.name);
           $("#feature-info").html(content);
           $("#featureModal").modal("show");
           highlight.clearLayers().addLayer(L.circleMarker([e.latlng.lat, e.latlng.lng], {
@@ -120,7 +92,7 @@ var markerClusters = new L.MarkerClusterGroup({
   disableClusteringAtZoom: 16
 });
 
-/* Empty layer placeholder to add to layer control for listening when to add/remove theaters to markerClusters layer */
+/* Empty layer placeholder to add to layer control for listening when to add/remove pois to markerClusters layer */
 var poiLayer = L.geoJson(null);
 var pois = L.geoJson(null, {
   pointToLayer: function (feature, latlng) {
@@ -260,11 +232,7 @@ if (document.body.clientWidth <= 767) {
 
 var baseLayers = {
   "Terrain": mapboxTer,
-  "Street": mapboxStreet,
   "Imagery": mapboxSat
-  /* "Street Map": mapquestOSM,
-  "Aerial Imagery": mapquestOAM,
-  "Imagery with Streets": mapquestHYB */
 };
 
 var groupedOverlays = {
@@ -292,17 +260,7 @@ $(document).one("ajaxStop", function () {
   map.fitBounds(wodTrail.getBounds());
   featureList = new List("features", {valueNames: ["feature-name"]});
   featureList.sort("feature-name", {order:"asc"});
-/*
-  var wodBH = new Bloodhound({
-    name: "WOD Trail",
-    datumTokenizer: function (d) {
-      return Bloodhound.tokenizers.whitespace(d.name);
-    },
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    local: wodSearch,
-    limit: 10
-  });
-*/
+
   var poiBH = new Bloodhound({
     name: "Places",
     datumTokenizer: function (d) {
@@ -343,7 +301,6 @@ $(document).one("ajaxStop", function () {
     },
     limit: 10
   });
-//  wodBH.initialize();
   poiBH.initialize();
   geonamesBH.initialize();
 
@@ -353,13 +310,6 @@ $(document).one("ajaxStop", function () {
     highlight: true,
     hint: false
   }, {
-/*    name: "WOD Trail",
-    displayKey: "name",
-    source: wodBH.ttAdapter(),
-    templates: {
-      header: "<h4 class='typeahead-header'>W&amp;OD Trail</h4>"
-    }
-  }, { */
     name: "Places",
     displayKey: "name",
     source: poiBH.ttAdapter(),
@@ -375,9 +325,6 @@ $(document).one("ajaxStop", function () {
       header: "<h4 class='typeahead-header'><img src='assets/img/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
     }
   }).on("typeahead:selected", function (obj, datum) {
-/*    if (datum.source === "WOD Trail") {
-      map.fitBounds(datum.bounds);
-    } */
     if (datum.source === "Places") {
       if (!map.hasLayer(poiLayer)) {
         map.addLayer(poiLayer);
