@@ -47,7 +47,7 @@ var wodTrail = L.geoJson(null, {
   },
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name/th><td>" + feature.properties.name + "<table>";
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.name + "<table>";
       layer.on({
         click: function (e) {
           $("#feature-title").html(feature.properties.name);
