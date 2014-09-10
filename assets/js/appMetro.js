@@ -92,7 +92,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "RD") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/RD.gif",
+          iconUrl: "assets/img/RD.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -104,7 +104,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "OR") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/OR.gif",
+          iconUrl: "assets/img/OR.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -116,7 +116,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "SV") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/SV.gif",
+          iconUrl: "assets/img/SV.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -128,7 +128,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "BL") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/BL.gif",
+          iconUrl: "assets/img/BL.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -140,7 +140,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "YL") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/YL.gif",
+          iconUrl: "assets/img/YL.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -152,7 +152,7 @@ var metro = L.geoJson(null, {
     if (feature.properties.LineCode1 === "GR") {
       return L.marker(latlng, {
         icon: L.icon({
-          iconUrl: "working/metro/GR.gif",
+          iconUrl: "assets/img/GR.gif",
           iconSize: [14, 14],
           iconAnchor: [12, 12],
           popupAnchor: [0, -12]
@@ -181,7 +181,7 @@ var metro = L.geoJson(null, {
     }
   }
 });
-$.getJSON("working/metro/stations.geojson", function (data) {
+$.getJSON("data/stations.geojson", function (data) {
   metro.addData(data);
 });
 
