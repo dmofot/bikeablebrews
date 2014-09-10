@@ -260,7 +260,7 @@ var pois = L.geoJson(null, {
   },
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.Name + "</td></tr>" + "<tr><th>Address</th><td>" + feature.properties.Address + "</td></tr>" + "<tr><th>Mile Marker Exit</th><td>" + feature.properties.MileMarkerExit + "</td></tr>" + "<tr><th>Website</th><td><a class='url-break' href='" + feature.properties.URL + "' target='_blank'>" + feature.properties.URL + "</a></td></tr>" + "<tr><th>Hours</th><td>" + feature.properties.Open + "</td></tr>" + "<tr><th>Directions</th><td>" + feature.properties.Directions + "</td></tr>" + "<table>";
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.Name + "</td></tr>" + "<tr><th>Address</th><td>" + feature.properties.Address + "</td></tr>" + "<tr><th>Mile Marker Exit</th><td>" + feature.properties.MileMarkerExit + "</td></tr>" + "<tr><th>Website</th><td><a class='url-break' href='" + feature.properties.URL + "' target='_blank'>" + feature.properties.URL + "</a></td></tr>" + "<tr><th>Hours</th><td>" + feature.properties.Open + "</td></tr>" + "<tr><th>Directions</th><td>" + "Located " + feature.properties.MilesFromTrail + ".  " + feature.properties.Directions + "</td></tr>" + "<table>";
       layer.on({
         click: function (e) {
           $("#feature-title").html(feature.properties.Name);
