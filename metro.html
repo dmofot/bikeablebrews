@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="bikeablebrews web map of good beer locations off the W&amp;OD Trail">
+    <meta name="author" content="David Todd">
+    <title>BikeableBrews</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Lato%7COswald:400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+    <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <div class="navbar-icon-container">
+          <a href="#" class="navbar-icon pull-right visible-xs" onclick="$('.navbar-collapse').collapse('toggle'); return false;"><i class="fa fa-bars fa-lg" style="color: white"></i></a>
+          <a href="#" class="navbar-icon pull-right visible-xs" onclick="$('#sidebar').toggle(); map.invalidateSize(); return false;"><i class="fa fa-search fa-lg" style="color: white"></i></a>
+        </div>
+        <a class="navbar-brand" href="#">BikeableBrews</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <form class="navbar-form navbar-right" role="search">
+          <div class="form-group has-feedback navbar-right">
+              <input id="searchbox" type="text" placeholder="Search" class="form-control">
+              <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+          </div>
+        </form>
+        <ul class="nav navbar-nav">
+          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#aboutModal').modal('show'); return false;"><i class="fa fa-question-circle" style="color: white"></i>&nbsp;&nbsp;About</a></li>
+          <li class="dropdown">
+            <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe" style="color: white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="map.fitBounds(wodTrail.getBounds()); return false;"><i class="fa fa-arrows-alt"></i>&nbsp;&nbsp;Zoom To Full Extent</a></li>
+              <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#legendModal').modal('show'); return false;"><i class="fa fa-picture-o"></i>&nbsp;&nbsp;Show Legend</a></li>
+            </ul>
+          </li>
+          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#sidebar').toggle(); map.invalidateSize(); return false;"><i class="fa fa-beer" style="color: white"></i>&nbsp;&nbsp;Places</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
+    </div>
+
+    <div id="container">
+      <div id="sidebar">
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" style="margin: 0px; border: none; border-radius: 0px; -webkit-box-shadow: none; box-shadow: none;" id="features">
+            <div class="panel-heading">
+              <h3 class="panel-title">Places
+              <button type="button" class="btn btn-xs btn-default pull-right" style="margin-top: -2px;" onclick="$('#sidebar').hide(); map.invalidateSize();"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <p>
+                <div class="row">
+                  <div class="col-xs-8 col-md-8">
+                    <input type="text" class="form-control search" placeholder="Search" />
+                  </div>
+                  <div class="col-xs-4 col-md-4">
+                    <button type="button" class="btn btn-primary pull-right sort" data-sort="feature-name" id="sort-btn"><i class="fa fa-sort"></i>&nbsp;&nbsp;Sort</button>
+                  </div>
+                </div>
+              </p>
+            </div>
+            <div class="sidebar-table">
+              <table class="table table-hover" id="feature-list">
+                <thead class="hidden">
+                  <tr>
+                    <th>Icon</th>
+                  <tr>
+                  <tr>
+                    <th>Name</th>
+                  <tr>
+                  <tr>
+                    <th>Chevron</th>
+                  <tr>
+                </thead>
+                <tbody class="list"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Welcome to BikeableBrews.com!</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs" id="aboutTabs">
+              <li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About the project</a></li>
+              <li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact us</a></li>
+              <li><a href="#disclaimer" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i>&nbsp;Metadata <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#wod-trail-tab" data-toggle="tab">W&amp;OD Trail</a></li>
+                  <li><a href="#pois-tab" data-toggle="tab">Place Data</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="tab-content" id="aboutTabsContent" style="padding-top: 10px;">
+              <div class="tab-pane fade active in" id="about">
+                <p>Bikeablebrews.com is a guide for Washington &amp; Old Dominion (W&amp;OD) trail users in search of some good microbrew refreshment along their ride. All establishments featured here are located within 1.5 miles of the trail and serve beer on the premises, with an emphasis on craft brews. Most have several taps. The list includes breweries, brewpubs, grocery stores, bars and restaurants. We’ve included directions and distance from the trail, days and hours of operation, website links, and URLs or contact information to find out what’s pouring. We will gradually add other DC area trails to the website.</p>
+              </div>
+              <div id="disclaimer" class="tab-pane fade text-danger">
+                <p>The data provided on this site is for informational and planning purposes only.</p>
+                <p>Absolutely no accuracy or completeness guarantee is implied or intended. All information on this map is subject to such variations and corrections as might result from a complete title search and/or accurate field survey.</p>
+              </div>
+              <div class="tab-pane fade" id="contact">
+                <a href="mailto:thirstyman@bikeablebrews.com">thirstyman@bikeablebrews.com</a>
+              </div>
+              <div class="tab-pane fade" id="wod-trail-tab">
+                <p><a href="https://gist.github.com/dmofot/1478fb3bb6862f768e3a#file-wod-geojson" target="_blank">W&amp;OD Trail</a> data was hand traced by <a href="http://davidtodd.info" target="_blank">DT</a> using satellite imagery.</p>
+              </div>
+              <div class="tab-pane fade" id="pois-tab">
+                <p>Place data provided by <a href="http://www.bikeablebrews.com" target="_blank">Bob McArthur</a>.  Last updated 08-28-2014.</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Map Legend</h4>
+          </div>
+          <div class="modal-body">
+            <p style="clear:both"><strong>Places of Interest</strong>, e.g. <em>breweries, bars, etc.</em> look like this: </p>
+            <div><img src='assets/img/beer.png' width='24' height='28' alt="beer"><br><br></div>
+            <p style="clear:both"><strong>Clusters of Places</strong> <em>at various densities</em> look like this: </p>
+            <div class="marker-cluster marker-cluster-small legend"><div><span>6</span></div></div>
+            <div class="marker-cluster marker-cluster-medium legend"><div><span>13</span></div></div>
+            <div class="marker-cluster marker-cluster-large legend"><div><span>247</span></div></div><br><br>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+              Developed by <a href='http://davidtodd.info'>davidtodd.info</a>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div id="attribution"></div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.2/typeahead.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
+    <script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+    <script src="assets/js/appMetro.js"></script>
+
+    <!-- Start of StatCounter Code for Default Guide -->
+    <script type="text/javascript">
+      var sc_project=10018320;
+      var sc_invisible=1;
+      var sc_security="2ed21fce";
+      var scJsHost = (("https:" == document.location.protocol) ?
+      "https://secure." : "http://www.");
+      document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+ "statcounter.com/counter/counter.js'></"+"script>");
+    </script>
+    <noscript><div class="statcounter"><a title="click tracking" href="http://statcounter.com/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/10018320/0/2ed21fce/1/" alt="click tracking"></a></div></noscript>
+    <!-- End of StatCounter Code for Default Guide -->
+  </body>
+</html>
