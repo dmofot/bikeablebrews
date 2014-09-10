@@ -185,6 +185,56 @@ $.getJSON("data/stations.geojson", function (data) {
   metro.addData(data);
 });
 
+var SV_OR = L.geoJson(null, {
+  pointToLayer: function (feature, latlng) {
+    if (feature.properties.LineCode1 === "SV") {
+      return L.marker(latlng, {
+        icon: L.icon({
+          iconUrl: "assets/img/SV.gif",
+          iconSize: [14, 14],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, -12]
+        }),
+        title: feature.properties.Name,
+        riseOnHover: true
+      });
+    }
+    if (feature.properties.LineCode1 === "OR") {
+      return L.marker(latlng, {
+        icon: L.icon({
+          iconUrl: "assets/img/OR.gif",
+          iconSize: [14, 14],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, -12]
+        }),
+        title: feature.properties.Name,
+        riseOnHover: true
+      });
+    }
+  },
+  onEachFeature: function (feature, layer) {
+    if (feature.properties) {
+      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.Name + "</td></tr>" + "<tr><th>Station Details</th><td><a class='url-break' href='" + metroDetailURL + feature.properties.StationID + "' target='_blank'>" + feature.properties.StationID + "</a></td></tr>" + "<tr><th>RealTime Updates</th><td><a class='url-break' href='" + metroRealTimeURL + feature.properties.StationID + "' target='_blank'>" + feature.properties.StationID + "</a></td></tr>" + "<table>";
+      layer.on({
+        click: function (e) {
+          $("#feature-title").html(feature.properties.Name);
+          $("#feature-info").html(content);
+          $("#featureModal").modal("show");
+          highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
+            stroke: false,
+            fillColor: "#00FFFF",
+            fillOpacity: 0.7,
+            radius: 10
+          }));
+        }
+      });
+    }
+  }
+});
+$.getJSON("data/SV_OR.geojson", function (data) {
+  SV_OR.addData(data);
+});
+
 /* Single marker cluster layer to hold all clusters */
 var markerClusters = new L.MarkerClusterGroup({
   spiderfyOnMaxZoom: true,
@@ -342,7 +392,8 @@ var groupedOverlays = {
   },
   "Reference": {
     "W&amp;OD Trail": wodTrail,
-    "Metro Stations": metro
+    "All Metro Stations": metro,
+    "SV &amp; OR Stations": SV_OR
   }
 };
 
