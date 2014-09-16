@@ -12,7 +12,7 @@
 
     <link href='http://fonts.googleapis.com/css?family=Lato%7COswald:400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
     <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
     <link rel="stylesheet" href="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
@@ -33,7 +33,7 @@
           <a href="#" class="navbar-icon pull-right visible-xs" onclick="$('.navbar-collapse').collapse('toggle'); return false;"><i class="fa fa-bars fa-lg" style="color: white"></i></a>
           <a href="#" class="navbar-icon pull-right visible-xs" onclick="$('#sidebar').toggle(); map.invalidateSize(); return false;"><i class="fa fa-search fa-lg" style="color: white"></i></a>
         </div>
-        <a class="navbar-brand" href="#"><i class="fa fa-bicycle" style="color: darkred"></i>&nbsp;&nbsp;BikeableBrews</a>
+        <a class="navbar-brand" href="#">BikeableBrews</a>
       </div>
       <div class="navbar-collapse collapse">
         <form class="navbar-form navbar-right" role="search">
@@ -51,7 +51,7 @@
               <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#legendModal').modal('show'); return false;"><i class="fa fa-picture-o"></i>&nbsp;&nbsp;Show Legend</a></li>
             </ul>
           </li>
-          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#sidebar').toggle(); map.invalidateSize(); return false;"><i class="fa fa-beer" style="color: gold"></i>&nbsp;&nbsp;Places</a></li>
+          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" onclick="$('#sidebar').toggle(); map.invalidateSize(); return false;"><i class="fa fa-beer" style="color: white"></i>&nbsp;&nbsp;Places</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -110,7 +110,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa fa-bicycle fa-border pull-left" style="color: darkred"></i>&nbsp;&nbsp;Welcome to BikeableBrews.com!</h4>
+            <h4 class="modal-title">Welcome to BikeableBrews.com!</h4>
           </div>
           <div class="modal-body">
             <ul class="nav nav-tabs" id="aboutTabs">
@@ -121,7 +121,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i>&nbsp;Metadata <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="#wod-trail-tab" data-toggle="tab">W&amp;OD Trail</a></li>
-                  <li><a href="#pois-tab" data-toggle="tab"><i class="fa fa-beer" style="color: gold"></i>&nbsp;Place Data</a></li>
+                  <li><a href="#pois-tab" data-toggle="tab">Place Data</a></li>
                 </ul>
               </li>
             </ul>
@@ -134,15 +134,13 @@
                 <p>Absolutely no accuracy or completeness guarantee is implied or intended. All information on this map is subject to such variations and corrections as might result from a complete title search and/or accurate field survey.</p>
               </div>
               <div class="tab-pane fade" id="contact">
-                <p>For all place inquiries, contact <a href="mailto:thirstyman@bikeablebrews.com">thirstyman@bikeablebrews.com</a>
-                <br>For all map inquiries, contact <a href="mailto:dmofot@gmail.com">DT</a>.</p>
-                <p>Additional places can be proposed on the <a href="https://github.com/bikeablebrews/wod">Github repository</a> issue <a href="https://github.com/bikeablebrews/wod/issues/2">here</a>.</p>
+                <a href="mailto:thirstyman@bikeablebrews.com">thirstyman@bikeablebrews.com</a>
               </div>
               <div class="tab-pane fade" id="wod-trail-tab">
-                <p><a href="https://gist.github.com/dmofot/1478fb3bb6862f768e3a#file-wod-geojson" target="_blank">W&amp;OD Trail</a> data was hand traced by <a href="http://davidtodd.info" target="_blank">DT</a> using satellite imagery. Larry Camp provided the initial <a href="http://www.arcgis.com/home/item.html?id=da8151680fff414f860c957b4381b15f">data</a>.</p>
+                <p><a href="https://gist.github.com/dmofot/1478fb3bb6862f768e3a#file-wod-geojson" target="_blank">W&amp;OD Trail</a> data was hand traced by <a href="http://davidtodd.info" target="_blank">DT</a> using satellite imagery.</p>
               </div>
               <div class="tab-pane fade" id="pois-tab">
-                <p>Place data researched and provided by <a href="http://www.bikeablebrews.com" target="_blank">Bob McArthur</a>.  Last updated 08-28-2014.</p>
+                <p>Place data provided by <a href="http://www.bikeablebrews.com" target="_blank">Bob McArthur</a>.  Last updated 08-28-2014.</p>
               </div>
             </div>
           </div>
@@ -215,7 +213,7 @@
     <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
     <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
     <script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/appMetro.js"></script>
 
     <!-- Start of StatCounter Code for Default Guide -->
     <script type="text/javascript">
