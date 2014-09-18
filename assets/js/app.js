@@ -86,6 +86,7 @@ $.getJSON("data/wod.geojson", function (data) {
 
 /* Single marker cluster layer to hold all clusters */
 var markerClusters = new L.MarkerClusterGroup({
+  maxClusterRadius: 40,
   spiderfyOnMaxZoom: true,
   showCoverageOnHover: false,
   zoomToBoundsOnClick: true,
